@@ -2,7 +2,7 @@ class Level {
     grid;
 
     constructor() {
-        Cell.size = width / 12;
+
         const w = 30;
         const h = 30;
         const center = createVector(

@@ -17,11 +17,11 @@ class Enemy extends AliveActor{
 
         this.animations.push(this.shootingAnimation);
 
-        this.moveSpeed = 0.1 * Cell.size;
+        this.moveSpeed = Cell.size * 0.1;
 
         this.target = undefined;
 
-        this.range = width*0.5;
+        this.range = width*0.3;
 
         this.States.shooting = 2;
 

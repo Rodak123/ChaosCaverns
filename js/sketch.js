@@ -25,8 +25,10 @@ function preload() {
 }
 
 function setup() {
-  createCanvas(600, 1000);
+  createCanvas(1000, 1000);
   noSmooth();
+
+  Cell.size = (width*0.6) / 12;
 
   gameCamera = new Camera();
 
