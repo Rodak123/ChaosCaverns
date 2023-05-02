@@ -72,7 +72,7 @@ class Player extends AliveActor{
     }
 
     update() {
-        this.maxSpeed = this.inDash?this.dashSpeed:this.moveSpeed;
+        this.maxSpeed = this.inDash?this.dashSpeed:this.moveSpeed*1.5;
 
         if(this.inDash){
             this.dash();

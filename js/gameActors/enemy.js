@@ -20,6 +20,7 @@ class Enemy extends AliveActor{
         this.animations.push(this.attackAnimation);
 
         this.moveSpeed = Cell.size * 0.1;
+        this.maxSpeed = this.moveSpeed;
 
         this.target = undefined;
 

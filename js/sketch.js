@@ -11,6 +11,10 @@ let projectiles = [];
 let gameCamera;
 
 function preload() {
+  loadImages();
+}
+
+function loadImages() {
   images.tileset = loadImage("res/LuisSn0w.png");
 
   const actors = [];
@@ -37,35 +41,7 @@ function preload() {
   images.projectiles = projectiles;
 }
 
-function getDocumentHeight(){
-  const body = document.body,
-      html = document.documentElement;
-  return Math.max(body.scrollHeight, body.offsetHeight,
-      html.clientHeight, html.scrollHeight, html.offsetHeight);
-}
-
-function inIframe () {
-  try {
-    return window.self !== window.top;
-  } catch (e) {
-    return true;
-  }
-}
-
-function setup() {
-  const docHeight = constrain(getDocumentHeight(), 800, 2000);
-  createCanvas(docHeight, docHeight);
-  noSmooth();
-
-  if (inIframe()){
-    const data = document.getElementById('data');
-    data.style.display = 'none';
-  }
-
-  Cell.size = (width*0.6) / 12;
-
-  gameCamera = new Camera();
-
+function splitImages() {
   images.tileset = splitTileset(images.tileset, 16 , 16)
   loadMyTileset(images.tileset);
 
@@ -78,6 +54,23 @@ function setup() {
   for (let i = 0; i < images.projectiles.length; i++) {
     images.projectiles[i] = splitTileset(images.projectiles[i], 16, 16);
   }
+}
+
+function setup() {
+  if (inIframe()){
+    const data = document.getElementById('data');
+    data.style.display = 'none';
+  }
+
+  const docHeight = constrain(getDocumentHeight(), 800, 2000);
+  createCanvas(docHeight, docHeight);
+  noSmooth();
+
+  splitImages();
+
+  Cell.size = (width*0.6) / 12;
+
+  gameCamera = new Camera();
 
   level = new Level();
 
@@ -90,7 +83,6 @@ function setup() {
   }
 
   gameCamera.setFollow(player.pos);
-
 }
 
 function draw() {
