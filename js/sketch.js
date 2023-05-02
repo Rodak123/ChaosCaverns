@@ -24,8 +24,16 @@ function preload() {
   images.actors = actors;
 }
 
+function getDocumentHeight(){
+  const body = document.body,
+      html = document.documentElement;
+  return Math.max(body.scrollHeight, body.offsetHeight,
+      html.clientHeight, html.scrollHeight, html.offsetHeight);
+}
+
 function setup() {
-  createCanvas(1000, 1000);
+  const docHeight = constrain(getDocumentHeight(), 800, 2000);
+  createCanvas(docHeight, docHeight);
   noSmooth();
 
   Cell.size = (width*0.6) / 12;

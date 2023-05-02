@@ -1,14 +1,93 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Overpass:wght@100;200;400;500;700&display=swap');
+
 * {
   margin: 0;
   padding: 0;
 }
 
 body{
-  background-color: #333333;
+  background-color: #0d1021;
+  position: relative;
 }
 
 canvas {
   display: block;
   margin: 0 auto;
-  border-radius: 4px;
+}
+
+body>div{
+  float: left;
+  box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6, p, a{
+  color: #ffffff;
+  font-family: 'Overpass', sans-serif;
+}
+
+#wrapper{
+  display: flex;
+  width: 100%;
+}
+
+.main{
+  flex-grow: 1;
+}
+
+.data{
+  width: 300px;
+  padding: 1rem;
+}
+
+#title h1{
+  font-weight: 800;
+  font-size: 2rem;
+}
+
+#title h2{
+  font-weight: 100;
+  font-size: 1.5rem;
+}
+
+#title a{
+  text-decoration: none;
+  font-weight: 300;
+}
+
+ul, li{
+  list-style: none;
+}
+
+.data .credits{
+  margin-bottom: 1rem;
+}
+
+.data .credits h3{
+  font-weight: 600;
+  font-size: 1.25rem;
+}
+
+.data .credits a, .data .credits h4{
+  text-decoration: none;
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+.data .credits a{
+  font-weight: 400;
+}
+
+.data .credits li{
+  margin-bottom: 0.1rem;
+}
+
+.data .title-ruler{
+  width: 90px;
+  margin: 1rem 0 2rem 0;
+}
+
+.data .credits-ruler{
+  width: 30px;
+  margin: 1rem 0;
 }
