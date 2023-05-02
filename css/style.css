@@ -35,9 +35,10 @@ h1, h2, h3, h4, h5, h6, p, a{
   flex-grow: 1;
 }
 
-.data{
+#data{
   width: 300px;
   padding: 1rem;
+  
 }
 
 #title h1{
@@ -59,35 +60,43 @@ ul, li{
   list-style: none;
 }
 
-.data .credits{
+#data .credits{
   margin-bottom: 1rem;
 }
 
-.data .credits h3{
+#data .credits h3{
   font-weight: 600;
   font-size: 1.25rem;
 }
 
-.data .credits a, .data .credits h4{
+#data .credits a, #data .credits h4{
   text-decoration: none;
   font-weight: 300;
   font-size: 1rem;
 }
 
-.data .credits a{
+#data .credits a{
   font-weight: 400;
 }
 
-.data .credits li{
+#data .credits li{
   margin-bottom: 0.1rem;
 }
 
-.data .title-ruler{
+#data .title-ruler{
   width: 90px;
   margin: 1rem 0 2rem 0;
 }
 
-.data .credits-ruler{
+#data .credits-ruler{
   width: 30px;
   margin: 1rem 0;
+}
+
+.p5js{
+  color: #ed225d;
+}
+
+.author-info{
+  font-size: 0.75rem;
 }

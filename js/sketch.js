@@ -44,10 +44,23 @@ function getDocumentHeight(){
       html.clientHeight, html.scrollHeight, html.offsetHeight);
 }
 
+function inIframe () {
+  try {
+    return window.self !== window.top;
+  } catch (e) {
+    return true;
+  }
+}
+
 function setup() {
   const docHeight = constrain(getDocumentHeight(), 800, 2000);
   createCanvas(docHeight, docHeight);
   noSmooth();
+
+  if (inIframe()){
+    const data = document.getElementById('data');
+    data.style.display = 'none';
+  }
 
   Cell.size = (width*0.6) / 12;
 
