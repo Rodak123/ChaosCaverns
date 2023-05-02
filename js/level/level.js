@@ -49,6 +49,7 @@ class Level {
     collide(actors){
         for (let i = 0; i < actors.length; i++) {
             const actor = actors[i];
+
             actor.collide(this.grid);
         }
     }

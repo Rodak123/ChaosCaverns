@@ -4,13 +4,23 @@ class Actor {
 
     vel;
     acc;
-    maxSpeed;
+
+    maxSpeed = 10;
+    velDamping = 0.6;
 
     dir;
 
     sprite;
 
-    updateDir;
+    updateDir = true;
+    collidesLevel = true;
+    bouncesOffLevel = false;
+
+    spriteSize = 16;
+    spriteScale = 1;
+
+    toDestroy = false;
+    drawHitBox = false;
 
     constructor(x, y, w, h, sprite) {
         this.pos = createVector(x, y);
@@ -21,17 +31,10 @@ class Actor {
 
         this.dir = createVector(1, 0);
 
-        this.maxSpeed = 1;
-
-        this.maxSpeed = 0.1;
-        this.velDamping = 0.6;
+        this.maxSpeed = 0.1 * Cell.size;
 
         this.setSprite(sprite);
 
-        this.spriteSize = 16;
-        this.spriteScale = 1;
-
-        this.updateDir = true;
     }
 
     setSprite(sprite){
@@ -49,7 +52,7 @@ class Actor {
         this.acc.mult(0);
 
         this.vel.mult(this.velDamping);
-        this.vel.limit(this.maxSpeed * Cell.size);
+        this.vel.limit(this.maxSpeed);
 
         if(this.updateDir){
             this.faceVelocity();
@@ -67,13 +70,21 @@ class Actor {
     }
 
     collide(grid){
+        if(this.collidesLevel === false) return;
+
         const left = grid.getCell(0, 0);
         if (left.solid === true){
             if(this.pos.x - this.dim.x * 0.5 < left.x+Cell.size){
                 this.pos.x = left.x + Cell.size + this.dim.x * 0.5;
+                if(this.bouncesOffLevel){
+                    this.vel.x *= -1;
+                }
             }
             if(this.pos.y - this.dim.y * 0.5 < left.y+Cell.size){
                 this.pos.y = left.y + Cell.size + this.dim.y * 0.5;
+                if(this.bouncesOffLevel){
+                    this.vel.y *= -1;
+                }
             }
         }
 
@@ -81,9 +92,15 @@ class Actor {
         if (right.solid === true){
             if(this.pos.x + this.dim.x * 0.5 > right.x){
                 this.pos.x = right.x - this.dim.x * 0.5;
+                if(this.bouncesOffLevel){
+                    this.vel.x *= -1;
+                }
             }
             if(this.pos.y + this.dim.y * 0.5 > right.y){
                 this.pos.y = right.y - this.dim.y * 0.5;
+                if(this.bouncesOffLevel){
+                    this.vel.y *= -1;
+                }
             }
         }
 
@@ -92,16 +109,37 @@ class Actor {
     show() {
         if(this.sprite){
             imageMode(CENTER);
-            image(this.sprite, this.pos.x, this.pos.y, this.dim.x*this.spriteScale, this.dim.y*this.spriteScale);
+            image(this.sprite, this.pos.x, this.pos.y, Cell.size*this.spriteScale, Cell.size*this.spriteScale);
         }else{
             rectMode(CENTER);
             fill(255);
             stroke(0);
             rect(this.pos.x, this.pos.y, this.dim.x, this.dim.y);
         }
+        if(this.drawHitBox || settings.drawHitBoxes){
+            this.showHitBox();
+        }
+    }
+
+    showHitBox(){
+        rectMode(CENTER);
+        noFill();
+        stroke(0, 255, 0);
+        rect(this.pos.x, this.pos.y, this.dim.x, this.dim.y);
     }
 
     applyForce(force) {
         this.acc.add(force);
+    }
+
+    destroy(){
+        this.toDestroy = true;
+    }
+
+    getDirectionCol(){
+        let col = round((this.dir.heading()+PI)/HALF_PI)%4;
+        if (col === 0) col = 3;
+        else if (col === 3) col = 0;
+        return col;
     }
 }

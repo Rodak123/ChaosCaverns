@@ -5,27 +5,31 @@ class Enemy extends AliveActor{
 
     range;
 
-    shootingAnimation;
+    attackAnimation;
 
-    constructor(x, y) {
-        super(x,  y, 1, 1,
-            images.actors[0].idle,
-            images.actors[0].walk
+    projectiles;
+
+    constructor(projectiles, x, y, sprite) {
+        super(x,  y, 0.85, 0.85,
+            images.actors[sprite].idle,
+            images.actors[sprite].walk
         );
 
-        this.shootingAnimation = createSpriteAnimation(images.actors[0].punch, 4, this.walkingAnimation);
+        this.attackAnimation = createSpriteAnimation(images.actors[sprite].punch, 4, this.walkingAnimation);
 
-        this.animations.push(this.shootingAnimation);
+        this.animations.push(this.attackAnimation);
 
         this.moveSpeed = Cell.size * 0.1;
 
         this.target = undefined;
 
-        this.range = width*0.3;
+        this.range = Cell.size * 5;
 
-        this.States.shooting = 2;
+        this.States.attacking = 2;
 
         this.updateDir = false;
+
+        this.projectiles = projectiles;
     }
 
     setTarget(target){
@@ -42,7 +46,7 @@ class Enemy extends AliveActor{
     beWalking() {
         const dir = p5.Vector.sub(this.target.pos, this.pos);
         if (dir.mag() <= this.range) {
-            this.state = this.States.shooting;
+            this.state = this.States.attacking;
             return;
         }
 
@@ -56,7 +60,7 @@ class Enemy extends AliveActor{
         super.beWalking();
     }
 
-    beShooting(){
+    beAttacking(){
         const dir = p5.Vector.sub(this.target.pos, this.pos);
         if (dir.mag() >= this.range) {
             this.state = this.States.walking;
@@ -65,7 +69,13 @@ class Enemy extends AliveActor{
 
         this.setDir(dir.normalize());
 
-        this.setSprite(this.shootingAnimation.getSprite());
+        this.setSprite(this.attackAnimation.getSprite());
+
+        if(frameCount % 20 === 0){
+            this.projectiles.push(
+                new ZombieArm(this, this.dir)
+            );
+        }
     }
 
     update() {

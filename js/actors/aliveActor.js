@@ -57,16 +57,8 @@ class AliveActor extends Actor{
             console.log(action + " can't be done.");
     }
 
-
-    getSpriteCol(){
-        let col = round((this.dir.heading()+PI)/HALF_PI)%4;
-        if (col === 0) col = 3;
-        else if (col === 3) col = 0;
-        return col;
-    }
-
     animate(){
-        const col = this.getSpriteCol();
+        const col = this.getDirectionCol();
 
         for (const animation of this.animations) {
             animation.setCol(col);
