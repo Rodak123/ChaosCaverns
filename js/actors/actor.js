@@ -76,15 +76,11 @@ class Actor {
         if (left.solid === true){
             if(this.pos.x - this.dim.x * 0.5 < left.x+Cell.size){
                 this.pos.x = left.x + Cell.size + this.dim.x * 0.5;
-                if(this.bouncesOffLevel){
-                    this.vel.x *= -1;
-                }
+                this.collidedLevel('x');
             }
             if(this.pos.y - this.dim.y * 0.5 < left.y+Cell.size){
                 this.pos.y = left.y + Cell.size + this.dim.y * 0.5;
-                if(this.bouncesOffLevel){
-                    this.vel.y *= -1;
-                }
+                this.collidedLevel('y');
             }
         }
 
@@ -92,18 +88,24 @@ class Actor {
         if (right.solid === true){
             if(this.pos.x + this.dim.x * 0.5 > right.x){
                 this.pos.x = right.x - this.dim.x * 0.5;
-                if(this.bouncesOffLevel){
-                    this.vel.x *= -1;
-                }
+                this.collidedLevel('x');
             }
             if(this.pos.y + this.dim.y * 0.5 > right.y){
                 this.pos.y = right.y - this.dim.y * 0.5;
-                if(this.bouncesOffLevel){
-                    this.vel.y *= -1;
-                }
+                this.collidedLevel('y');
             }
         }
 
+    }
+
+    collidedLevel(edge){
+        if(this.bouncesOffLevel){
+            if(edge === 'x'){
+                this.vel.x *= -1;
+            }else if(edge === 'y'){
+                this.vel.y *= -1;
+            }
+        }
     }
 
     show() {

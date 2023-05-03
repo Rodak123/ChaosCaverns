@@ -6,5 +6,6 @@ const playerControls = {
     dash: 32
 };
 const settings = {
-    drawHitBoxes: false
+    drawHitBoxes: false,
+    showData: false
 };

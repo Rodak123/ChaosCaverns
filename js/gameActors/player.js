@@ -18,7 +18,7 @@ class Player extends AliveActor{
             images.actors[0].walk
         );
 
-        this.moveSpeed = Cell.size * 0.2;
+        this.moveSpeed = Cell.size * 0.1;
         this.dashSpeed = Cell.size * 1;
 
         this.maxSpeed = this.moveSpeed;

@@ -57,7 +57,7 @@ function splitImages() {
 }
 
 function setup() {
-  if (inIframe()){
+  if (inIframe() || settings.showData === false){
     const data = document.getElementById('data');
     data.style.display = 'none';
   }

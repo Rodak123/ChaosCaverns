@@ -12,6 +12,8 @@ class SpriteAnimation {
 
     playing;
 
+    actions = [];
+
     constructor(spriteSheet, cols, animInterval) {
         this.spriteSheet = spriteSheet;
 
@@ -38,6 +40,9 @@ class SpriteAnimation {
         if(this.animTime >= this.animInterval){
             this.animTime = 0;
             this.row++;
+            if(this.actions[this.row] !== undefined){
+                this.actions[this.row]();
+            }
         }
     }
 

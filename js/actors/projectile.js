@@ -5,12 +5,16 @@ class Projectile extends Actor{
 
     lifespan;
 
+    bouncesOffLevel;
+    destroyOnLevel;
+
     constructor(x, y, w, h, sprites, origin, dir, speed, lifespan) {
         super(x, y, w, h);
 
         this.sprites = sprites;
 
         this.bouncesOffLevel = true;
+        this.destroyOnLevel = false;
 
         this.origin = origin;
 
@@ -38,6 +42,13 @@ class Projectile extends Actor{
         const col = this.getDirectionCol();
 
         this.setSprite(this.sprites[col]);
+    }
+
+    collidedLevel(edge) {
+        if(this.destroyOnLevel){
+            this.destroy();
+        }
+        super.collidedLevel(edge);
     }
 
 }
