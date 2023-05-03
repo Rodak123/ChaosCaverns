@@ -20,11 +20,12 @@ class Enemy extends AliveActor{
             images.actors[sprite].idle,
             images.actors[sprite].walk
         );
+        this.tag = "enemy";
 
         this.attackAnimation = new SpriteAnimation(images.actors[sprite].punch, 4, 0.1);
         //createSpriteAnimation(images.actors[sprite].punch, 4, this.walkingAnimation);
         this.attackAnimation.enemy = this;
-        this.attackAnimation.actions[1] = () => {
+        this.attackAnimation.actions[3] = () => {
             this.attack();
         };
 
@@ -42,6 +43,7 @@ class Enemy extends AliveActor{
         this.updateDir = false;
 
         this.projectiles = projectiles;
+
     }
 
     setTarget(target){

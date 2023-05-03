@@ -1,4 +1,6 @@
 class Actor {
+    tag = "actor";
+
     pos;
     dim;
 
@@ -69,7 +71,7 @@ class Actor {
         this.dir.set(dir.x, dir.y);
     }
 
-    collide(grid){
+    collideGrid(grid){
         if(this.collidesLevel === false) return;
 
         const left = grid.getCell(0, 0);
@@ -96,6 +98,20 @@ class Actor {
             }
         }
 
+    }
+
+    collideActors(me, actors){
+        for (let i = 0; i < actors.length; i++) {
+            if(i === me) continue;
+            const actor = actors[i];
+            if(Collision.actorActor(this, actor)){
+                this.collidedActor(actor);
+            }
+        }
+    }
+
+    collidedActor(actor){
+        //print("Collided: " + actor);
     }
 
     collidedLevel(edge){

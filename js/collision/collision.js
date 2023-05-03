@@ -5,9 +5,11 @@ class Collision {
     }
 
     static rectRect(pos1, dim1, pos2, dim2){
-        return pos1.x + dim1.x * 0.5 >= pos2.x - dim2.x * 0.5 &&
-            pos1.x - dim1.x * 0.5 <= pos2.x + dim2.x  * 0.5 &&
-            pos1.y + dim1.y * 0.5 >= pos2.y - dim2 * 0.5 &&
-            pos1.y - dim1.y * 0.5 <= pos2.y + dim2.y  * 0.5;
+        pos1 = p5.Vector.sub(pos1, dim1.copy().mult(0.5));
+        pos2 = p5.Vector.sub(pos2, dim2.copy().mult(0.5));
+        return pos1.x + dim1.x >= pos2.x &&                 // r1 right edge past r2 left
+            pos1.x             <= pos2.x + dim2.x &&        // r1 left edge past r2 right
+            pos1.y + dim1.y    >= pos2.y &&                 // r1 top edge past r2 bottom
+            pos1.y             <= pos2.y + dim2.y;          // r1 bottom edge past r2 top
     }
 }

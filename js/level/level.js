@@ -50,7 +50,7 @@ class Level {
         for (let i = 0; i < actors.length; i++) {
             const actor = actors[i];
 
-            actor.collide(this.grid);
+            actor.collideGrid(this.grid);
         }
     }
 

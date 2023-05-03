@@ -8,8 +8,11 @@ class Projectile extends Actor{
     bouncesOffLevel;
     destroyOnLevel;
 
+    damage = 1;
+
     constructor(x, y, w, h, sprites, origin, dir, speed, lifespan) {
         super(x, y, w, h);
+        this.tag = "projectile";
 
         this.sprites = sprites;
 
@@ -25,6 +28,7 @@ class Projectile extends Actor{
         this.velDamping = 1;
 
         this.lifespan = lifespan;
+
     }
 
     update() {
@@ -49,6 +53,17 @@ class Projectile extends Actor{
             this.destroy();
         }
         super.collidedLevel(edge);
+    }
+
+    hit(actor){
+        if(actor.takeDamage === undefined) return;
+        actor.takeDamage(this.damage);
+        this.destroy();
+    }
+
+    collidedActor(actor){
+        if(actor === this.origin) return;
+        this.hit(actor);
     }
 
 }

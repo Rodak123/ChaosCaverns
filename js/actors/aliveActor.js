@@ -10,6 +10,9 @@ class AliveActor extends Actor{
     };
     state = this.States.idle;
 
+    maxHealth = 1;
+    health = this.maxHealth;
+
     constructor(x, y, w, h, idleSprites, walkSprites) {
         super(x,  y, w, h);
 
@@ -64,6 +67,30 @@ class AliveActor extends Actor{
             animation.setCol(col);
             animation.update();
         }
+    }
+
+    died(){
+        this.destroy();
+    }
+
+    takeDamage(damage){
+        this.health -= damage;
+        if(this.health <= 0){
+            this.died();
+        }
+    }
+
+    heal(heal){
+        this.health += heal;
+        if(this.health > this.maxHealth){
+            const overHeal = this.maxHealth - this.health;
+            this.health = this.maxHealth;
+            this.overHealed(overHeal);
+        }
+    }
+
+    overHealed(overHeal){
+        //print("OverHealed: " + overHeal);
     }
 
 }

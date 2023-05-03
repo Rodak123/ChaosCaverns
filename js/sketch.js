@@ -10,6 +10,8 @@ let projectiles = [];
 
 let gameCamera;
 
+let gameGUI;
+
 function preload() {
   loadImages();
 }
@@ -33,12 +35,21 @@ function loadImages() {
     "coin",
     "log",
     "rock",
+    "knife",
+    "axe",
   ];
   const projectiles = [];
   for (const name of projectileNames) {
     projectiles.push(loadImage("res/actors/projectiles/" + name + ".png"));
   }
   images.projectiles = projectiles;
+
+  const gui = {};
+  gui.icons = loadImage("res/icons.png");
+
+  gui.numbers = loadImage("res/numbers.png");
+  gui.numbers_clean = loadImage("res/numbers-clean.png");
+  images.gui = gui;
 }
 
 function splitImages() {
@@ -54,6 +65,10 @@ function splitImages() {
   for (let i = 0; i < images.projectiles.length; i++) {
     images.projectiles[i] = splitTileset(images.projectiles[i], 16, 16);
   }
+
+  images.gui.icons = splitTileset(images.gui.icons, 16, 16);
+  images.gui.numbers = splitTileset(images.gui.numbers, 16, 16);
+  images.gui.numbers_clean = splitTileset(images.gui.numbers_clean, 16, 16);
 }
 
 function setup() {
@@ -61,6 +76,8 @@ function setup() {
     const data = document.getElementById('data');
     data.style.display = 'none';
   }
+
+  frameRate(60);
 
   const docHeight = constrain(getDocumentHeight(), 800, 2000);
   createCanvas(docHeight, docHeight);
@@ -83,6 +100,18 @@ function setup() {
   }
 
   gameCamera.setFollow(player.pos);
+
+  gameGUI = new Gui(Cell.size*0.1, Cell.size*0.1);
+
+  const guiUnit = Cell.size*1.5;
+  const playerHealth = new NumberDisplay(guiUnit, 0, guiUnit*3, guiUnit, true, 20, 2, -1);
+  playerHealth.setTrack(player, 'health');
+  gameGUI.addElement(playerHealth);
+
+  const playerHealthIcon = new GuiImage(0, 0, guiUnit, guiUnit, images.gui.icons[0]);
+  gameGUI.addElement(playerHealthIcon);
+
+  // GUI setup end
 }
 
 function draw() {
@@ -119,6 +148,9 @@ function draw() {
       .sort((a, b) => {return b.pos.y - a.pos.y;});
 
   level.collide(actors);
+  for (let i = actors.length-1; i >= 0; i--) {
+    actors[i].collideActors(i, actors);
+  }
 
   //player.moveCamera(gameCamera);
 
@@ -128,6 +160,9 @@ function draw() {
   }
 
   pop();
+
+  gameGUI.update();
+  gameGUI.show();
 
 }
 
