@@ -2,10 +2,22 @@ class EnemySpawner extends Spawner{
     projectiles;
     player;
 
-    constructor(x, y, enemies, projectiles, player) {
+    type;
+
+    static Types = {
+        Goblin: 'Goblin',
+        Zombie: 'Zombie',
+        Orc: 'Orc',
+        Statue: 'Statue',
+        EvilBunny: 'EvilBunny'
+    };
+
+    constructor(x, y, type, enemies, projectiles, player) {
         super(x, y, images.spawnRing, enemies, 0.45);
         this.projectiles = projectiles;
         this.player = player;
+
+        this.type = type;
     }
 
     onSpawn() {
@@ -17,7 +29,26 @@ class EnemySpawner extends Spawner{
     }
 
     getEnemy(){
-        return new EvilBunny(this.projectiles, this.pos.x, this.pos.y);
+        let enemy;
+        switch (this.type) {
+            case EnemySpawner.Types.Goblin:
+                enemy = new EvilBunny(this.projectiles, this.pos.x, this.pos.y);
+                break;
+            default:
+            case EnemySpawner.Types.Zombie:
+                enemy = new Zombie(this.projectiles, this.pos.x, this.pos.y);
+                break;
+            case EnemySpawner.Types.Orc:
+                enemy = new Orc(this.projectiles, this.pos.x, this.pos.y);
+                break;
+            case EnemySpawner.Types.Statue:
+                enemy = new Statue(this.projectiles, this.pos.x, this.pos.y);
+                break;
+            case EnemySpawner.Types.EvilBunny:
+                enemy = new EvilBunny(this.projectiles, this.pos.x, this.pos.y);
+                break;
+        }
+        return enemy;
     }
 
     show() {

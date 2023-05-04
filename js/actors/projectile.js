@@ -63,6 +63,7 @@ class Projectile extends Actor{
 
     collidedActor(actor){
         if(actor === this.origin) return;
+        if(actor.tag === this.origin.tag) return;
         this.hit(actor);
     }
 

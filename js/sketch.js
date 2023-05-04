@@ -14,6 +14,8 @@ let gameCamera;
 
 let gameGUI;
 
+let wave;
+
 function preload() {
   loadImages();
 }
@@ -104,7 +106,15 @@ function setup() {
     enemy.setTarget(player);
   }*/
 
-  otherActors.push(new EnemySpawner(100, 0, enemies, projectiles, player));
+  //otherActors.push(new EnemySpawner(100, 0, EnemySpawner.Types.Orc, enemies, projectiles, player));
+
+  wave = new EnemyWave([
+    new EnemySpawner(100, 0, EnemySpawner.Types.Orc, enemies, projectiles, player),
+    new EnemySpawner(-100, 0, EnemySpawner.Types.Orc, enemies, projectiles, player),
+    new EnemySpawner(0, 100, EnemySpawner.Types.Orc, enemies, projectiles, player),
+    new EnemySpawner(0, -100, EnemySpawner.Types.Orc, enemies, projectiles, player)
+  ], otherActors);
+  wave.spawn();
 
   gameCamera.setFollow(player.pos);
 
