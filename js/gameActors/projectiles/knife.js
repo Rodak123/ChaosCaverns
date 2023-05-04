@@ -5,6 +5,9 @@ class Knife extends Projectile{
 
         this.bouncesOffLevel = false;
         this.destroyOnLevel = true;
+
+        const spread = radians(5);
+        this.vel.rotate(random(-spread, spread));
     }
 
 }

@@ -9,12 +9,6 @@ class Enemy extends AliveActor{
 
     projectiles;
 
-    States = {
-        idle: 0,
-        walking: 1,
-        attacking: 2
-    };
-
     constructor(projectiles, x, y, sprite) {
         super(x,  y, 0.85, 0.85,
             images.actors[sprite].idle,
@@ -38,12 +32,11 @@ class Enemy extends AliveActor{
 
         this.range = Cell.size * 5;
 
-        this.States.attacking = 2;
-
         this.updateDir = false;
 
         this.projectiles = projectiles;
 
+        this.States.attacking = "attacking";
     }
 
     setTarget(target){

@@ -127,6 +127,8 @@ function draw() {
   level.show();
 
   player.update();
+  player.attack(enemies);
+
   for (let i = enemies.length-1; i >= 0; i--) {
     const enemy = enemies[i];
     if(enemy.toDestroy){
@@ -135,6 +137,7 @@ function draw() {
     }
     enemy.update();
   }
+
   for (let i = projectiles.length-1; i >= 0; i--) {
     const projectile = projectiles[i];
     if(projectile.toDestroy){

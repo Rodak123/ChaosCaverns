@@ -5,8 +5,9 @@ class AliveActor extends Actor{
     animations;
 
     States = {
-        idle: 0,
-        walking: 1
+        dead: 'dead',
+        idle: 'idle',
+        walking: 'walking'
     };
     state = this.States.idle;
 
@@ -52,7 +53,7 @@ class AliveActor extends Actor{
     }
 
     doAction(){
-        const key = Object.keys(this.States)[this.state];
+        const key = this.States[this.state];
         const action = "be"+(key.charAt(0).toUpperCase())+key.slice(1);
         if(this[action])
             this[action]();
@@ -70,6 +71,10 @@ class AliveActor extends Actor{
     }
 
     died(){
+        this.state = this.States.dead;
+    }
+
+    beDead(){
         this.destroy();
     }
 

@@ -22,6 +22,8 @@ class Player extends AliveActor{
     dashOrbAngle = 0;
     dashOrbAngleSpeed = HALF_PI;
 
+    dashAnimation;
+
     constructor(projectiles, x, y) {
         super(x,  y, 0.7, 0.7,
             images.actors[0].idle,
@@ -42,6 +44,11 @@ class Player extends AliveActor{
 
         this.maxHealth = 99;
         this.health = 20;
+
+        this.States.dashing = "dashing";
+
+        this.dashAnimation = new SpriteAnimation(images.actors[0].punch, 4, 0.2);
+        this.animations.push(this.dashAnimation);
     }
 
     move(){
@@ -70,6 +77,10 @@ class Player extends AliveActor{
     startDash(){
         if(this.dashes <= 0 || this.dashTime > 0) return;
 
+        this.state = this.States.dashing;
+        this.dashAnimation.reset();
+        this.dashAnimation.row = 2;
+
         this.inDash = true;
         this.dashed = 0;
 
@@ -89,6 +100,16 @@ class Player extends AliveActor{
 
         this.inDash = false;
         this.dashTime = this.dashCooldown;
+        this.state = this.States.idle;
+    }
+
+    rechargeDash(){
+        if(this.dashes === this.maxDashes) return;
+        this.dashes++;
+    }
+
+    beDashing(){
+        this.setSprite(this.dashAnimation.getSprite());
     }
 
     update() {
@@ -105,7 +126,7 @@ class Player extends AliveActor{
             this.dashRechargeTime += Time.deltaTime;
             if(this.dashRechargeTime >= this.dashRecharge){
                 this.dashRechargeTime = 0;
-                this.dashes++;
+                this.rechargeDash();
             }
         }
 
@@ -120,8 +141,23 @@ class Player extends AliveActor{
         this.dashOrbAngle += this.dashOrbAngleSpeed * Time.deltaTime;
     }
 
-    attack(actors){
+    attack(enemies){
+        const nearestEnemies = enemies.sort((a, b) => {
+            return p5.Vector.dist(this.pos, b.pos) - p5.Vector.dist(this.pos, a.pos)
+        });
 
+        const enemy = nearestEnemies[0];
+        if(enemy ===  undefined) return;
+
+        const dir = p5.Vector.sub(enemy.pos, this.pos).normalize();
+
+        const projectiles = [
+           // new Knife(this, dir)
+        ];
+
+        for (const projectile of projectiles) {
+            this.projectiles.push(projectile);
+        }
     }
 
     died() {
@@ -152,6 +188,21 @@ class Player extends AliveActor{
             pop();
         }
         pop();
+    }
+
+    collidedActor(actor) {
+        if(actor.tag === "enemy" && this.inDash){
+            actor.takeDamage(1);
+            if(actor.state === actor.States.dead){
+                this.rechargeDash();
+            }
+        }
+
+        super.collidedActor(actor);
+    }
+
+    animate() {
+        super.animate();
     }
 
 }
