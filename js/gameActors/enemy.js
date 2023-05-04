@@ -9,14 +9,14 @@ class Enemy extends AliveActor{
 
     projectiles;
 
-    constructor(projectiles, x, y, sprite) {
+    constructor(projectiles, x, y, sprite, range, moveSpeed, attackSpeed) {
         super(x,  y, 0.85, 0.85,
             images.actors[sprite].idle,
             images.actors[sprite].walk
         );
         this.tag = "enemy";
 
-        this.attackAnimation = new SpriteAnimation(images.actors[sprite].punch, 4, 0.1);
+        this.attackAnimation = new SpriteAnimation(images.actors[sprite].punch, 4, attackSpeed);
         //createSpriteAnimation(images.actors[sprite].punch, 4, this.walkingAnimation);
         this.attackAnimation.enemy = this;
         this.attackAnimation.actions[3] = () => {
@@ -25,12 +25,12 @@ class Enemy extends AliveActor{
 
         this.animations.push(this.attackAnimation);
 
-        this.moveSpeed = Cell.size * 0.1;
+        this.moveSpeed = Cell.size * moveSpeed;
         this.maxSpeed = this.moveSpeed;
 
         this.target = undefined;
 
-        this.range = Cell.size * 5;
+        this.range = Cell.size * range;
 
         this.updateDir = false;
 

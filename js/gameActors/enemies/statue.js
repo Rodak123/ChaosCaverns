@@ -1,20 +1,26 @@
-class Orc extends Enemy{
+class Statue extends Enemy{
+
+    miss = true;
 
     constructor(projectiles, x, y) {
-        super(projectiles, x, y, 5, 8, 0.08, 1);
-
-        this.attackDir = createVector(1, 0);
+        super(projectiles, x, y, 7, 8, 0.06, 0.3);
 
     }
 
     getProjectiles(){
         const projectiles = [];
         const attackDir = this.dir.copy();
-        const deviate = radians(30);
+        if(this.miss){
+            attackDir.rotate(radians(30));
+        }
+        this.miss = !this.miss;
+        const rocks = 6;
+        const rotOff = TWO_PI / rocks;
 
-        projectiles.push(new OrcsLog(this, attackDir.copy().rotate(deviate)));
-        projectiles.push(new OrcsLog(this, attackDir.copy().rotate(deviate * -1)));
-
+        for (let i = 0; i < rocks; i++) {
+            projectiles.push(new Rock(this, attackDir));
+            attackDir.rotate(rotOff);
+        }
         return projectiles;
     }
 

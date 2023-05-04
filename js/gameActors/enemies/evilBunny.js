@@ -1,9 +1,10 @@
-class Bunny extends Enemy{
+class EvilBunny extends Enemy{
 
-    miss = true;
+    clockwise = true;
+    miss = false;
 
     constructor(projectiles, x, y) {
-        super(projectiles, x, y, 7, 8, 0.06, 0.3);
+        super(projectiles, x, y, 8, 8, 0.06, 0.2);
 
     }
 
@@ -14,11 +15,12 @@ class Bunny extends Enemy{
             attackDir.rotate(radians(30));
         }
         this.miss = !this.miss;
+        this.clockwise = !this.clockwise;
         const rocks = 6;
         const rotOff = TWO_PI / rocks;
 
         for (let i = 0; i < rocks; i++) {
-            projectiles.push(new Rock(this, attackDir));
+            projectiles.push(new Bone(this, attackDir, this.clockwise?1:-1));
             attackDir.rotate(rotOff);
         }
         return projectiles;

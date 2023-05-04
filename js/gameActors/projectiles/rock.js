@@ -1,12 +1,12 @@
-class OrcsLog extends Projectile{
+class Rock extends Projectile{
 
     constructor(origin, dir) {
-        super(origin.pos.x, origin.pos.y, 0.35, 0.35, images.projectiles[3], origin, dir, 0.02, 30);
+        super(origin.pos.x, origin.pos.y, 0.3, 0.3, images.projectiles[4], origin, dir, 0.15, 15);
 
-        this.bouncesOffLevel = true;
-        this.destroyOnLevel = false;
+        this.bouncesOffLevel = false;
+        this.destroyOnLevel = true;
 
-        this.damage = 2;
+        this.damage = 1;
     }
 
 }

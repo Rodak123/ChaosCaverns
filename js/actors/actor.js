@@ -1,6 +1,8 @@
 class Actor {
     tag = "actor";
 
+    layer = 0;
+
     pos;
     dim;
 

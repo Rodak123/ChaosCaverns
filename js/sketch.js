@@ -8,6 +8,8 @@ let player;
 let enemies = [];
 let projectiles = [];
 
+let otherActors = [];
+
 let gameCamera;
 
 let gameGUI;
@@ -50,6 +52,8 @@ function loadImages() {
   gui.numbers = loadImage("res/numbers.png");
   gui.numbers_clean = loadImage("res/numbers-clean.png");
   images.gui = gui;
+
+  images.spawnRing = loadImage("res/spawnRing.png");
 }
 
 function splitImages() {
@@ -69,6 +73,8 @@ function splitImages() {
   images.gui.icons = splitTileset(images.gui.icons, 16, 16);
   images.gui.numbers = splitTileset(images.gui.numbers, 16, 16);
   images.gui.numbers_clean = splitTileset(images.gui.numbers_clean, 16, 16);
+
+  images.spawnRing = splitTileset(images.spawnRing, 16, 16);
 }
 
 function setup() {
@@ -93,11 +99,12 @@ function setup() {
 
   player = new Player(projectiles, 0, 0);
 
-  enemies.push(new Zombie(projectiles, 500, 0));
-
+  /*enemies.push(new Zombie(projectiles, 500, 0));
   for (const enemy of enemies) {
     enemy.setTarget(player);
-  }
+  }*/
+
+  otherActors.push(new EnemySpawner(100, 0, enemies, projectiles, player));
 
   gameCamera.setFollow(player.pos);
 
@@ -147,8 +154,23 @@ function draw() {
     projectile.update();
   }
 
-  const actors = [player].concat(enemies).concat(projectiles)
-      .sort((a, b) => {return b.pos.y - a.pos.y;});
+  for (let i = otherActors.length-1; i >= 0; i--) {
+    const otherActor = otherActors[i];
+    if(otherActor.toDestroy){
+      otherActors.splice(i, 1);
+      continue;
+    }
+    otherActor.update();
+  }
+
+  const actors = [player].concat(enemies).concat(projectiles).concat(otherActors)
+      .sort((a, b) => {
+        if(a.layer === b.layer){
+          return b.pos.y - a.pos.y;
+        }else{
+          return b.layer - a.layer;
+        }
+      });
 
   level.collide(actors);
   for (let i = actors.length-1; i >= 0; i--) {
